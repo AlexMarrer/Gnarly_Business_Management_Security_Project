@@ -32,7 +32,7 @@ Das geklonte Open-Source-Projekt auf eine aktuelle Java- und Spring-Boot-Version
 </parent>
 ```
 
-> **Fallstrick:** Nach Update `mvn dependency:resolve` laufen lassen. Hibernate-Version NICHT manuell überschreiben – wird durch Spring Boot Parent gesteuert.
+> **Fallstrick:** Nach Update `./mvnw dependency:resolve` laufen lassen. Hibernate-Version NICHT manuell überschreiben – wird durch Spring Boot Parent gesteuert.
 
 ---
 
@@ -87,19 +87,19 @@ server.port=2330
 ---
 
 ### 5. Projekt kompilieren
-- [ ] `mvn clean compile` ausführen – muss fehlerfrei durchlaufen
+- [ ] `./mvnw clean compile` ausführen – muss fehlerfrei durchlaufen
 - [ ] Bei Fehlern: Compile-Output vollständig lesen, gezielt beheben
 
 ```bash
-mvn clean compile
+./mvnw clean compile
 # oder vollständiger Build:
-mvn clean package -DskipTests
+./mvnw clean package -DskipTests
 ```
 
 ---
 
 ### 6. Applikation starten & erreichbar
-- [ ] `mvn spring-boot:run` oder JAR starten
+- [ ] `./mvnw spring-boot:run` oder JAR starten
 - [ ] `http://localhost:2330` im Browser öffnen
 - [ ] Konsole zeigt: `Started BusinessProjectApplication` und `Tomcat started on port(s): 2330`
 

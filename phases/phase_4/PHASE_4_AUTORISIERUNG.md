@@ -14,7 +14,7 @@ Alle Endpunkte rollenbasiert absichern – sowohl auf Backend-Ebene (`@PreAuthor
 | `@GetMapping("/admin/services")` | Vollständig offen – kein Login nötig |
 | Keine `@PreAuthorize`-Annotationen | Auf keinem einzigen Controller |
 | Navigation.html | Kein `xmlns:sec`, kein `sec:authorize` |
-| Alle 24 Endpunkte | Ohne Rollenschutz |
+| Alle ~25 Endpunkte | Ohne Rollenschutz (5 in HomeController, ~15 in AdminController, 3 in UserController, 3 in ProductController) |
 
 ---
 
@@ -23,8 +23,10 @@ Alle Endpunkte rollenbasiert absichern – sowohl auf Backend-Ebene (`@PreAuthor
 | Endpunkt | Methode | Aktuelle Rolle | Ziel-Rolle |
 |---|---|---|---|
 | `/home` | GET | OFFEN | `permitAll` |
+| `/products` | GET | OFFEN | `permitAll` |
+| `/location` | GET | OFFEN | `permitAll` |
+| `/about` | GET | OFFEN | `permitAll` |
 | `/login` | GET/POST | OFFEN | `permitAll` |
-| `/register` | GET/POST | OFFEN | `permitAll` |
 | `/adminLogin` | GET | OFFEN | **ENTFERNEN** (Phase 2) |
 | `/userlogin` | GET | OFFEN | **ENTFERNEN** (Phase 2) |
 | `/admin/services` | GET | OFFEN | `ROLE_ADMIN` |
@@ -58,8 +60,9 @@ Alle Endpunkte rollenbasiert absichern – sowohl auf Backend-Ebene (`@PreAuthor
 ```java
 // SecurityConfig.java – authorizeHttpRequests Block
 .authorizeHttpRequests(auth -> auth
-    .requestMatchers("/login", "/register", "/home",
-                     "/css/**", "/js/**", "/images/**").permitAll()
+    // ACHTUNG: Statische Ordner heissen /Images/, /JavaScript/, /Videos/ (Gross/Klein!)
+    .requestMatchers("/login", "/home", "/products", "/location", "/about",
+                     "/css/**", "/Images/**", "/JavaScript/**", "/Videos/**").permitAll()
     .requestMatchers("/admin/**", "/addAdmin", "/addingAdmin",
                      "/updateAdmin/**", "/updatingAdmin/**", "/deleteAdmin/**",
                      "/addProduct", "/addingProduct", "/updateProduct/**",
@@ -195,6 +198,8 @@ Die Abnahme prüft explizit: **"Allfällige Formulare werden gar nicht ausgelief
 - Beim Umbau der Controller-Endpunkte: delete/update von GET auf POST umstellen (State-Changes per GET sind unsicher)
 - `@EnableMethodSecurity` in `SecurityConfig` nicht vergessen – sonst werden `@PreAuthorize`-Annotationen ignoriert!
 - Alte `AdminController.adminLogin()` und `userLogin()` Methoden nach Phase 2 entfernen – sonst konflikten die GET-Login-Endpunkte mit Spring Security
+- `/products`, `/location`, `/about` nicht vergessen als `permitAll` – diese Seiten sind öffentlich (HomeController)
+- Statische Ressourcen: Ordnernamen sind case-sensitive auf Linux! `/Images/**`, `/JavaScript/**`, `/Videos/**` (nicht lowercase)
 
 ---
 

@@ -43,8 +43,8 @@ VALUES (UUID(), 'Admin', 'admin@test.ch', '$2a$12$HASH_HIER_EINSETZEN', '0791234
 INSERT INTO user (id, uname, uemail, upassword, unumber)
 VALUES (UUID(), 'Test User', 'user@test.ch', '$2a$12$HASH_HIER_EINSETZEN', '0797654321');
 
--- Beispieldaten Produkte
-INSERT INTO product (id, pname, pprice, pdesc)
+-- Beispieldaten Produkte (Feldname ist pdescription, nicht pdesc!)
+INSERT INTO product (id, pname, pprice, pdescription)
 VALUES (UUID(), 'Produkt 1', 19.90, 'Beschreibung Produkt 1');
 ```
 
@@ -210,8 +210,8 @@ server.servlet.session.cookie.http-only=true
 
 **Code-Ausschnitt:**
 ```java
-// UserRepository.java
-User findByUemail(String email);
+// UserRepository.java (aktueller Methodenname)
+User findUserByUemail(String email);
 // Hibernate generiert intern: SELECT * FROM user WHERE uemail = ?
 ```
 

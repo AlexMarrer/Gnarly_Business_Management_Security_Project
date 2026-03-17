@@ -22,7 +22,7 @@ public void setUserPassword(String userPassword) {
 }
 @Override
 public String toString() {
-	return "UserLogin [userEmail=" + userEmail + ", userPassword=" + userPassword + "]";
+	return "UserLogin [userEmail=" + userEmail + "]";
 }
 
 

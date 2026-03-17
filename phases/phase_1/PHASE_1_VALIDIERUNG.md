@@ -35,8 +35,15 @@ Alle Entitäten mit korrekten Typen (UUID statt int), Bean Validation Annotation
 - `updatingUser` als `@GetMapping` → State-Change per GET (falsch)
 
 ### AdminController.java – Befunde
-- `@Valid` und `BindingResult` sind importiert aber nirgends verwendet
+- `@Valid` und `BindingResult` sind importiert (Zeile 11, 30) aber nirgends verwendet
 - `addAdmin`, `orderHandler` → keine Validierung
+- `System.out.println(product)` in Zeile 175 → loggt Produktdaten
+
+### Doppelte Mappings (Konflikt-Risiko!)
+- `@PostMapping("/addingUser")` existiert in **beiden** `UserController.java` und wird von `AdminController` Formular aufgerufen
+- `@PostMapping("/addingProduct")` existiert in **beiden** `ProductController.java` und wird von `AdminController` Formular aufgerufen
+- `@GetMapping("/updatingUser/{id}")`, `/deleteUser/{id}`, `/updatingProduct/{id}`, `/deleteProduct/{id}` → ebenfalls doppelt
+- **Lösung:** CRUD-Logik nur in `UserController`/`ProductController` belassen, aus `AdminController` die Duplikate entfernen (AdminController hat die Formular-Seiten-Aufrufe, die eigentliche Logik ist in den spezifischen Controllern)
 
 ### HTML-Templates – Befunde
 - `Add_User.html`: Passwort hardcoded als `value="2330"` in hidden field
@@ -161,7 +168,7 @@ private String pname;
 
 @NotBlank(message = "Beschreibung ist erforderlich")
 @Size(max = 500)
-private String pdesc;
+private String pdescription;  // Achtung: aktueller Feldname ist pdescription, NICHT pdesc
 
 @NotNull
 @DecimalMin("0.01")

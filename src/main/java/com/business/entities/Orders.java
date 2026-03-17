@@ -1,47 +1,68 @@
 package com.business.entities;
 
-import java.util.Date;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.UUID;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
-public class Orders
-{
+public class Orders {
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int oId;
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private UUID id;
+
+	@NotBlank(message = "Produktname ist erforderlich")
+	@Size(min = 2, max = 100)
 	private String oName;
-	private double oPrice;
-	private int oQuantity;
-	private Date orderDate;
-	private double totalAmmout;
-	
+
+	@NotNull(message = "Preis ist erforderlich")
+	@DecimalMin(value = "0.01", message = "Preis muss mindestens 0.01 sein")
+	@Digits(integer = 9, fraction = 2)
+	private BigDecimal oPrice;
+
+	@NotNull(message = "Menge ist erforderlich")
+	@Min(value = 1, message = "Mindestmenge: 1")
+	@Max(value = 999, message = "Maximalmenge: 999")
+	private Integer oQuantity;
+
+	private LocalDate orderDate;
+
+	@NotNull
+	@DecimalMin(value = "0.01")
+	@Digits(integer = 12, fraction = 2)
+	private BigDecimal totalAmount;
+
 	@ManyToOne
-	@JoinColumn(name="user_u_id")
+	@JoinColumn(name = "user_id")
 	private User user;
 
-	public Date getOrderDate() {
-		return orderDate;
+	@PrePersist
+	protected void onCreate() {
+		this.orderDate = LocalDate.now();
 	}
 
-	public void setOrderDate(Date orderDate) {
-		this.orderDate = orderDate;
+	public UUID getId() {
+		return id;
 	}
 
-	
-
-	public int getoId() {
-		return oId;
-	}
-
-	public void setoId(int oId) {
-		this.oId = oId;
+	public void setId(UUID id) {
+		this.id = id;
 	}
 
 	public String getoName() {
@@ -52,20 +73,36 @@ public class Orders
 		this.oName = oName;
 	}
 
-	public double getoPrice() {
+	public BigDecimal getoPrice() {
 		return oPrice;
 	}
 
-	public void setoPrice(double oPrice) {
+	public void setoPrice(BigDecimal oPrice) {
 		this.oPrice = oPrice;
 	}
 
-	public int getoQuantity() {
+	public Integer getoQuantity() {
 		return oQuantity;
 	}
 
-	public void setoQuantity(int oQuantity) {
+	public void setoQuantity(Integer oQuantity) {
 		this.oQuantity = oQuantity;
+	}
+
+	public LocalDate getOrderDate() {
+		return orderDate;
+	}
+
+	public void setOrderDate(LocalDate orderDate) {
+		this.orderDate = orderDate;
+	}
+
+	public BigDecimal getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(BigDecimal totalAmount) {
+		this.totalAmount = totalAmount;
 	}
 
 	public User getUser() {
@@ -75,21 +112,11 @@ public class Orders
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
-
-	public double getTotalAmmout() {
-		return totalAmmout;
-	}
-
-	public void setTotalAmmout(double totalAmmout) {
-		this.totalAmmout = totalAmmout;
-	}
 
 	@Override
 	public String toString() {
-		return "Orders [oId=" + oId + ", oName=" + oName + ", oPrice=" + oPrice + ", oQuantity=" + oQuantity
-				+ ", orderDate=" + orderDate + ", totalAmmout=" + totalAmmout + ", user=" + user + "]";
+		return "Orders [id=" + id + ", oName=" + oName + ", oPrice=" + oPrice
+				+ ", oQuantity=" + oQuantity + ", orderDate=" + orderDate
+				+ ", totalAmount=" + totalAmount + "]";
 	}
-
-
 }

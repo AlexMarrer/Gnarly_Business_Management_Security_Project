@@ -1,69 +1,45 @@
 package com.business.services;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.business.entities.Product;
 import com.business.repositories.ProductRepository;
+
 @Component
-public class ProductServices 
-{
+public class ProductServices {
+
 	@Autowired
 	private ProductRepository productRepository;
 
-	//add Product
-	public void addProduct(Product p)
-	{
+	public void addProduct(Product p) {
 		this.productRepository.save(p);
 	}
 
-
-	//getAll products
-	public List<Product> getAllProducts()
-	{
-		List<Product> products=(List<Product>)this.productRepository.findAll();
-		return products;
+	public List<Product> getAllProducts() {
+		return (List<Product>) this.productRepository.findAll();
 	}
 
-	//get Single Product
-	public Product getProduct(int id)
-	{
-		Optional<Product> optional = this.productRepository.findById(id);
-		Product product=optional.get();
-		return product;
+	public Product getProduct(UUID id) {
+		return this.productRepository.findById(id).orElseThrow();
 	}
 
-	//update Product
-	public void updateproduct(Product p,int id)
-	{
-		p.setPid(id);
-		Optional<Product> optional = this.productRepository.findById(id);
-		Product prod=optional.get();
-
-		if(prod.getPid()==id)
-		{
-			this.productRepository.save(p);				
-		}
+	public void updateproduct(Product p, UUID id) {
+		Product existing = this.productRepository.findById(id).orElseThrow();
+		existing.setPname(p.getPname());
+		existing.setPprice(p.getPprice());
+		existing.setPdescription(p.getPdescription());
+		this.productRepository.save(existing);
 	}
-	//delete product
-	public void deleteProduct(int id)
-	{
+
+	public void deleteProduct(UUID id) {
 		this.productRepository.deleteById(id);
 	}
 
-	//Get Product By Name
-	public Product getProductByName(String name)
-	{
-		
-		Product product= this.productRepository.findByPname(name);
-		if(product!=null)
-		{
-			return product;
-		}
-		return null;
-	
+	public Product getProductByName(String name) {
+		return this.productRepository.findByPname(name);
 	}
 }

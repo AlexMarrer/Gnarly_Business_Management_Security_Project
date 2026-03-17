@@ -11,21 +11,32 @@
 	<a href="/admin/services">Back to Services</a>
 	<div class="addAdmin">
 		<h3 style="color: red;">ADD NEW ADMIN/PARTNER</h3>
-		<form action="" th:action="@{/addingAdmin}" method="post">
+		<form action="" th:action="@{/addingAdmin}" th:object="${admin}" method="post">
 			Admin_Name :
-			<input type="text" name="adminName" placeholder="Enter name..." class="adminName" minlength="2" required>
+			<input type="text" th:field="*{adminName}" placeholder="Enter name..." class="adminName"
+				minlength="2" maxlength="50" required>
+			<div th:if="${#fields.hasErrors('adminName')}" th:errors="*{adminName}" style="color:red;font-size:12px;"></div>
 			<br />
 
 			Admin_Email :
-			<input type="email" name="adminEmail" placeholder="Enter email..." class="adminEmail" required><br />
+			<input type="email" th:field="*{adminEmail}" placeholder="Enter email..." class="adminEmail" required>
+			<div th:if="${#fields.hasErrors('adminEmail')}" th:errors="*{adminEmail}" style="color:red;font-size:12px;"></div>
+			<br />
 
+			Admin_Password :
+			<input type="password" th:field="*{adminPassword}" placeholder="Enter password..." class="adminPassword"
+				required minlength="8"
+				pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$"
+				title="Min. 8 Zeichen: Gross, Klein, Zahl, Sonderzeichen">
+			<div th:if="${#fields.hasErrors('adminPassword')}" th:errors="*{adminPassword}" style="color:red;font-size:12px;"></div>
+			<br />
 
 			Admin_Number :
-			<input type="tel" name="adminNumber" placeholder="Enter 10 digit mobile number..." class="adminNumber"
-				pattern="[0-9]{10}" required /><br />
+			<input type="tel" th:field="*{adminNumber}" placeholder="Enter phone number..." class="adminNumber"
+				pattern="\d{10,15}" title="10-15 Ziffern" required />
+			<div th:if="${#fields.hasErrors('adminNumber')}" th:errors="*{adminNumber}" style="color:red;font-size:12px;"></div>
+			<br />
 
-
-			<input type="hidden" name="adminPassword" value="1234" />
 			<button type="submit">Add_Admin</button>
 		</form>
 	</div>

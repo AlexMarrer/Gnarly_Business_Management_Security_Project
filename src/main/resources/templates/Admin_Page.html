@@ -10,7 +10,9 @@
 </head>
 
 <body>
-	<a class="back" href="/login">Back</a>
+	<form th:action="@{/logout}" method="post" style="display:inline;">
+		<button type="submit" class="back" style="cursor:pointer; font:inherit;">Logout</button>
+	</form>
 	<center>
 		<section class="tables">
 			<div class="admins">
@@ -24,13 +26,13 @@
 						<th>Actions</th>
 					</tr>
 					<tr th:each="admin :${admins}">
-						<td th:text="${admin.adminId}"></td>
+						<td th:text="${admin.id}"></td>
 						<td th:text="${admin.adminName}"></td>
 						<td th:text="${admin.adminEmail}"></td>
 						<td th:text="${admin.adminNumber}"></td>
-						<td><a style="color: blue;" href="" th:href="@{'/updateAdmin/'+${admin.adminId}}"><i
+						<td><a style="color: blue;" href="" th:href="@{'/updateAdmin/'+${admin.id}}"><i
 									class="fa-solid fa-pen"></i></a><span>&nbsp;</span>
-							<a style="color: red;" href="" th:href="@{'/deleteAdmin/'+${admin.adminId}}"><i
+							<a style="color: red;" href="" th:href="@{'/deleteAdmin/'+${admin.id}}"><i
 									class="fa-solid fa-trash"></i></a>
 						</td>
 					</tr>
@@ -38,7 +40,7 @@
 				<a href="" class="btns" th:href="@{/addAdmin}">Add_Admin</a>
 			</div>
 
-			<div class="users" th:object="${userObject}">
+			<div class="users">
 				<h2>Users :</h2>
 				<table>
 					<tr>
@@ -49,13 +51,13 @@
 						<th>Actions</th>
 					</tr>
 					<tr th:each="user :${users}">
-						<td th:text="${user.u_id}"></td>
+						<td th:text="${user.id}"></td>
 						<td th:text="${user.uname}"></td>
 						<td th:text="${user.uemail}"></td>
 						<td th:text="${user.unumber}"></td>
-						<td><a style="color: blue;" href="" th:href="@{'/updateUser/'+${user.u_id}}"><i
+						<td><a style="color: blue;" href="" th:href="@{'/updateUser/'+${user.id}}"><i
 									class="fa-solid fa-pen"></i></a><span>&nbsp;</span>
-							<a style="color: red;" href="" th:href="@{'/deleteUser/'+${user.u_id}}"> <i
+							<a style="color: red;" href="" th:href="@{'/deleteUser/'+${user.id}}"> <i
 									class="fa-solid fa-trash"></i></a>
 						</td>
 					</tr>
@@ -74,19 +76,19 @@
 						<th>Actions</th>
 					</tr>
 					<tr th:each="product :${products}">
-						<td th:text="${product.pid}"></td>
+						<td th:text="${product.id}"></td>
 						<td th:text="${product.pname}"></td>
 						<td th:text="${product.pprice}"></td>
-						<td><a style="color: blue;" href="" th:href="@{'/updateProduct/'+${product.pid}}"><i
+						<td><a style="color: blue;" href="" th:href="@{'/updateProduct/'+${product.id}}"><i
 									class="fa-solid fa-pen"></i></a><span>&nbsp;</span>
-							<a style="color: red;" href="" th:href="@{'/deleteProduct/'+${product.pid}}"><i
+							<a style="color: red;" href="" th:href="@{'/deleteProduct/'+${product.id}}"><i
 									class="fa-solid fa-trash"></i></a>
 						</td>
 					</tr>
 				</table>
 				<a href="" class="btns" th:href="@{'/addProduct'}">Add_Product</a>
 			</div>
-			
+
 			<div class="details">
 				<h2>Orders :</h2>
 			<table >
@@ -96,7 +98,7 @@
 					<th>Product_Name</th>
 					<th>Product_Price</th>
 					<th>Product_Quantity</th>
-					<th>Total_Ammount</th>
+					<th>Total_Amount</th>
 					<th>Date</th>
 				</tr>
 				<tr th:each="order :${orders}">
@@ -105,7 +107,7 @@
 					<td th:text="${order.oName}"></td>
 					<td th:text="${order.oPrice}"></td>
 					<td th:text="${order.oQuantity}"></td>
-					<td th:text="${order.totalAmmout}"></td>
+					<td th:text="${order.totalAmount}"></td>
 					<td th:text="${order.orderDate}"></td>
 
 				</tr>
@@ -113,7 +115,7 @@
 		</div>
 		</section>
 	</center>
-	
+
 </body>
 
 </html>

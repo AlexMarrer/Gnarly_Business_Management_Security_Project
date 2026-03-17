@@ -1,64 +1,46 @@
 package com.business.services;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import com.business.entities.Admin;
 import com.business.repositories.AdminRepository;
+import com.business.security.PepperPasswordEncoder;
 
 @Component
-public class AdminServices
-{
+public class AdminServices {
+
 	@Autowired
 	private AdminRepository adminRepository;
-	
-	//Get All Admins
-	public List<Admin>getAll()
-	{
-		 List<Admin> admins = (List<Admin>)this.adminRepository.findAll();
-		 return admins;
+
+	@Autowired
+	private PepperPasswordEncoder passwordEncoder;
+
+	public List<Admin> getAll() {
+		return (List<Admin>) this.adminRepository.findAll();
 	}
-	//Get Single Admin
-	public Admin getAdmin(int id)
-	{
-		Optional<Admin> optional = this.adminRepository.findById(id);
-		Admin admin=optional.get();
-		return admin;
+
+	public Admin getAdmin(UUID id) {
+		return this.adminRepository.findById(id).orElseThrow();
 	}
-//Update Admin
-	public void update(Admin admin ,int id)
-	{
-		for (Admin ad : getAll()) 
-		{
-			if(ad.getAdminId()==id)
-			{
-				this.adminRepository.save(admin);
-			}
-		}
+
+	public void update(Admin admin, UUID id) {
+		Admin existing = this.adminRepository.findById(id).orElseThrow();
+		existing.setAdminName(admin.getAdminName());
+		existing.setAdminEmail(admin.getAdminEmail());
+		existing.setAdminNumber(admin.getAdminNumber());
+		this.adminRepository.save(existing);
 	}
-	
-	//delete User
-	public void delete(int id)
-	{
+
+	public void delete(UUID id) {
 		this.adminRepository.deleteById(id);
 	}
-	
-	//add Admin
-	public void addAdmin(Admin admin)
-	{
+
+	public void addAdmin(Admin admin) {
+		admin.setAdminPassword(passwordEncoder.encode(admin.getAdminPassword()));
 		this.adminRepository.save(admin);
-	}
-	
-	//Validating Admin login
-	public boolean validateAdminCredentials(String email,String password)
-	{
-		Admin admin=adminRepository.findByAdminEmail(email);
-		if(admin!=null && admin.getAdminPassword().equals(password))
-		{
-			return true;
-		}
-		return false;
 	}
 }

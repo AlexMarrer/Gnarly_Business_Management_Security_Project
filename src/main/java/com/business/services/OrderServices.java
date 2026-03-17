@@ -1,7 +1,7 @@
 package com.business.services;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -9,42 +9,31 @@ import org.springframework.stereotype.Component;
 import com.business.entities.Orders;
 import com.business.entities.User;
 import com.business.repositories.OrderRepository;
+
 @Component
-public class OrderServices
-{
+public class OrderServices {
+
 	@Autowired
 	private OrderRepository orderRepository;
 
-	//get all orders
-	public List<Orders> getOrders()
-	{
-		List<Orders> list=this.orderRepository.findAll();
-		return list;
+	public List<Orders> getOrders() {
+		return this.orderRepository.findAll();
 	}
-	//save Order
-	public void saveOrder(Orders order)
-	{
+
+	public void saveOrder(Orders order) {
 		this.orderRepository.save(order);
 	}
-	
-	//update order
-	public void updateOrder(int id,Orders order)
-	{
-		order.setoId(id);
+
+	public void updateOrder(UUID id, Orders order) {
+		order.setId(id);
 		this.orderRepository.save(order);
-		 
 	}
-	
-	//delete order
-	public void deleteOrder(int id)
-	{
+
+	public void deleteOrder(UUID id) {
 		this.orderRepository.deleteById(id);
 	}
-	
-	//get Order history of user
-	public List<Orders> getOrdersForUser(User user)
-	{
-	 return  this.orderRepository.findOrdersByUser(user);
+
+	public List<Orders> getOrdersForUser(User user) {
+		return this.orderRepository.findOrdersByUser(user);
 	}
-	
 }

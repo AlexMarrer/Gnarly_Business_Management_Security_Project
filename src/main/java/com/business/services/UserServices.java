@@ -1,74 +1,50 @@
 package com.business.services;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.business.entities.Admin;
 import com.business.entities.User;
 import com.business.repositories.UserRepository;
+import com.business.security.PepperPasswordEncoder;
+
 @Component
-public class UserServices 
-{
+public class UserServices {
+
 	@Autowired
 	private UserRepository userRepository;
-		
-	//Get All Users
-	public List<User> getAllUser()
-	{
-		List<User> users = (List<User>) this.userRepository.findAll();
-		return users;
+
+	@Autowired
+	private PepperPasswordEncoder passwordEncoder;
+
+	public List<User> getAllUser() {
+		return (List<User>) this.userRepository.findAll();
 	}
-	
-	//Get Single User
-	public User getUser(int id)
-	{
-		Optional<User> optional = this.userRepository.findById(id);
-		User user = optional.get();
-		return user;
+
+	public User getUser(UUID id) {
+		return this.userRepository.findById(id).orElseThrow();
 	}
-	
-	//Get Single User By Email
-	public User getUserByEmail(String email)
-	{
-	 User user=	this.userRepository.findUserByUemail(email);
-	 return user;
+
+	public User getUserByEmail(String email) {
+		return this.userRepository.findUserByUemail(email);
 	}
-	
-	//Update
-	public void updateUser(User user,int id)
-	{
-		user.setU_id(id);
-		 this.userRepository.save(user);
+
+	public void updateUser(User user, UUID id) {
+		User existing = this.userRepository.findById(id).orElseThrow();
+		existing.setUname(user.getUname());
+		existing.setUemail(user.getUemail());
+		existing.setUnumber(user.getUnumber());
+		this.userRepository.save(existing);
 	}
-	
-	//delete single User
-	public void deleteUser(int id)
-	{
+
+	public void deleteUser(UUID id) {
 		this.userRepository.deleteById(id);
 	}
 
-	//Add User
-	public void addUser(User user)
-	{
-	this.userRepository.save(user);
+	public void addUser(User user) {
+		user.setUpassword(passwordEncoder.encode(user.getUpassword()));
+		this.userRepository.save(user);
 	}
-	
-	public boolean validateLoginCredentials(String email,String password)
-	{
-		List<User> users = (List<User>) this.userRepository.findAll();
-		for(User u:users)
-		{
-		if(u!=null && u.getUpassword().equals(password) && u.getUemail().equals(email))
-		{
-			return true;
-		}
-		}
-		return false;
-	}
-	
-	
-
 }

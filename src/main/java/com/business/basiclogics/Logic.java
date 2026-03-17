@@ -1,11 +1,9 @@
 package com.business.basiclogics;
 
-public class Logic
-{
- public static double countTotal(double price,int quantity)
- {
-	 double res=price*quantity;
-	 return res;
- }
-	
+import java.math.BigDecimal;
+
+public class Logic {
+	public static BigDecimal countTotal(BigDecimal price, int quantity) {
+		return price.multiply(BigDecimal.valueOf(quantity));
+	}
 }

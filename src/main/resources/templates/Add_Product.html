@@ -1,27 +1,36 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.com">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
 	<meta charset="UTF-8" />
-	<title>Document</title>
+	<title>Product : Add</title>
 	<link rel="stylesheet" href="" th:href="@{/css/Add_Product.css}" />
 </head>
 
 <body>
-	<a href="/services">Back to Services</a>
+	<a href="/admin/services">Back to Services</a>
 	<div class="addProducts">
 		<h3 style="font-weight: bolder;color: seagreen;">ADD NEW PRODUCT :</h3>
-		<form action="" th:action="@{/addingProduct}" method="post">
+		<form action="" th:action="@{/addingProduct}" th:object="${product}" method="post">
 			Product_Name :
-			<input type="text" name="pname" value="" placeholder="Enter Product Name....." /> <br />
+			<input type="text" th:field="*{pname}" placeholder="Enter Product Name..."
+				required minlength="2" maxlength="100" />
+			<div th:if="${#fields.hasErrors('pname')}" th:errors="*{pname}" style="color:red;font-size:12px;"></div>
+			<br />
+
 			Product_Price :
-			<input type="text" name="pprice" placeholder="Enter Product Price...." /><br />
+			<input type="number" th:field="*{pprice}" placeholder="Enter Product Price..."
+				required min="0.01" step="0.01" />
+			<div th:if="${#fields.hasErrors('pprice')}" th:errors="*{pprice}" style="color:red;font-size:12px;"></div>
+			<br />
+
 			Product_Desc : <br />
-			<textarea name="pdescription" id="" cols="15" rows="1"
-				placeholder="Enter Product Description.."></textarea><br />
+			<textarea th:field="*{pdescription}" cols="15" rows="1"
+				placeholder="Enter Product Description..." required maxlength="500"></textarea>
+			<div th:if="${#fields.hasErrors('pdescription')}" th:errors="*{pdescription}" style="color:red;font-size:12px;"></div>
+			<br />
 
 			<button type="submit">Add_Product</button>
-
 		</form>
 	</div>
 </body>

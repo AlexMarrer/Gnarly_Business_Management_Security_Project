@@ -21,6 +21,6 @@ public class AdminLogin
 	}
 	@Override
 	public String toString() {
-		return "AdminLogin [name=" + email + ", password=" + password + "]";
+		return "AdminLogin [email=" + email + "]";
 	}	
 }

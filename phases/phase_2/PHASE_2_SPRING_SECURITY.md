@@ -13,7 +13,7 @@ Spring Security einrichten, alle Login-Prozesse auf sichere POST-Requests umstel
 | Passwörter im Klartext in der DB | `UserServices.validateLoginCredentials()` | Datenleck = alle Passwörter sofort lesbar |
 | Keine Spring Security Dependency | `pom.xml` | Keinerlei Framework-Schutz |
 | Kein `SecurityConfig` | gesamte Codebase | Alle Endpunkte öffentlich erreichbar |
-| Login-Fehler verrät Details | `AdminController.java:57` – `model.addAttribute("error2", "Invalid email or password")` | Akzeptabel, aber ohne Brute-Force-Schutz nutzlos |
+| Login-Fehler verrät Details | `AdminController.java:57` (Admin: `error`) und `:79` (User: `error2`) – `"Invalid email or password"` | Akzeptabel, aber ohne Brute-Force-Schutz nutzlos |
 
 ---
 
@@ -94,7 +94,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         // Zuerst User-Tabelle prüfen
-        User user = userRepo.findByUemail(email);
+        // ACHTUNG: Aktuelle Methode heisst findUserByUemail() – umbenennen zu findByUemail() in UserRepository
+        //          oder hier den bestehenden Methodennamen verwenden.
+        User user = userRepo.findUserByUemail(email);
         if (user != null) {
             return org.springframework.security.core.userdetails.User.builder()
                     .username(user.getUemail())
@@ -116,7 +118,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 }
 ```
 
-> **Fallstrick:** `UserRepository` und `AdminRepository` müssen eine `findByUemail(String email)` bzw. `findByAdminEmail(String email)` Methode haben. Diese ggf. in den Repositories ergänzen.
+> **Fallstrick:** `UserRepository` hat aktuell `findUserByUemail(String email)` – entweder diesen Namen hier verwenden, oder in `UserRepository.java` auf `findByUemail(String email)` umbenennen (Spring Data leitet die Query automatisch ab). `AdminRepository` hat bereits `findByAdminEmail(String email)` – das passt.
 
 ---
 
@@ -141,17 +143,25 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/login", "/register", "/home",
-                                 "/css/**", "/js/**", "/images/**").permitAll()
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/user/**", "/product/**").hasRole("USER")
+                // Öffentlich: Startseiten + statische Ressourcen
+                // ACHTUNG: Verzeichnisse heissen /Images/, /JavaScript/, /Videos/ (Gross/Klein beachten auf Linux!)
+                .requestMatchers("/login", "/home", "/products", "/location", "/about",
+                                 "/css/**", "/Images/**", "/JavaScript/**", "/Videos/**").permitAll()
+                .requestMatchers("/admin/**", "/addAdmin", "/addingAdmin",
+                                 "/updateAdmin/**", "/updatingAdmin/**", "/deleteAdmin/**",
+                                 "/addProduct", "/addingProduct", "/updateProduct/**",
+                                 "/updatingProduct/**", "/deleteProduct/**",
+                                 "/addUser", "/addingUser", "/updateUser/**",
+                                 "/updatingUser/**", "/deleteUser/**").hasRole("ADMIN")
+                .requestMatchers("/product/**").hasRole("USER")
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
                 .loginPage("/login")
                 .usernameParameter("email")
                 .passwordParameter("password")
-                .defaultSuccessUrl("/dashboard", true)
+                // Admin → /admin/services, User → BuyProduct (via SuccessHandler, siehe unten)
+                .defaultSuccessUrl("/home", true)
                 .failureUrl("/login?error=true")
                 .permitAll()
             )
@@ -201,10 +211,14 @@ public class SecurityConfig {
 - [ ] Thymeleaf Login-Template anpassen: `action="/login"`, `method="post"`, CSRF-Token
 
 ```html
-<!-- Login.html – Vorher: separate Admin/User Formulare mit GET -->
-<!-- Login.html – Nachher: ein einheitliches Spring Security Login-Formular -->
+<!-- Login.html – VORHER: 2 separate Formulare (Admin + User), beide mit GET -->
+<!--   Admin-Form:  th:action="@{/adminLogin}" → name="email", name="password" -->
+<!--   User-Form:   th:action="@{/userlogin}"  → name="userEmail", name="userPassword" -->
+
+<!-- NACHHER: ein einheitliches Spring Security Login-Formular (POST) -->
+<!-- ACHTUNG: name="email" und name="password" müssen zu usernameParameter/passwordParameter in SecurityConfig passen! -->
 <form th:action="@{/login}" method="post">
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <!-- CSRF-Token wird von Thymeleaf mit th:action automatisch eingefügt -->
     <input type="email" name="email" required placeholder="E-Mail"/>
     <input type="password" name="password" required placeholder="Passwort"/>
     <button type="submit">Login</button>

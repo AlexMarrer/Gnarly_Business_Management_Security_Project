@@ -13,12 +13,13 @@ Sicheres Session-Management implementieren: Session Fixation Protection, Timeout
 private String email;   // Singleton-Feld – geteilt zwischen ALLEN Requests!
 private User user;      // Race Condition: User A sieht Daten von User B!
 ```
+> **Kontext:** `email` wird in `userLogin()` (Zeile 67) gesetzt: `email = login.getUserEmail()`, `user` wird in Zeile 71 gesetzt: `user = this.services.getUserByEmail(email)`. Beide sind Instanzfelder auf dem Singleton-Controller.
 Spring Controller sind **Singletons** – `private User user` wird zwischen allen parallelen HTTP-Requests geteilt. Wenn User A einloggt und gleichzeitig User B eine Bestellung aufgibt, landet User B's Bestellung unter User A's Account.
 
 **Betroffene Methoden die `this.user` referenzieren:**
-- `seachHandler()` (Zeile 93–101)
-- `orderHandler()` (Zeile 197–207)
-- `back()` (Zeile 209–214)
+- `seachHandler()` (Zeile 86–102) – nutzt `this.user` für Bestellhistorie
+- `orderHandler()` (Zeile 196–207) – setzt `order.setUser(user)` mit Singleton-Feld
+- `back()` (Zeile 209–215) – nutzt `this.user` für Bestellhistorie
 
 ### application.properties
 Keine einzige Session/Cookie-Konfiguration vorhanden. Aktueller Stand nur:

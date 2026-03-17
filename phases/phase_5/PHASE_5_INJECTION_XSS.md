@@ -36,9 +36,9 @@ SQL Injection durch Hibernate Prepared Statements und eingeschränkten DB-User a
 Spring Data JPA / Hibernate generiert für alle Repository-Methoden intern Prepared Statements. Das bedeutet: Benutzereingaben werden NIEMALS direkt in SQL-Strings eingebaut.
 
 ```java
-// Beispiel: UserRepository
-public interface UserRepository extends JpaRepository<User, UUID> {
-    User findByUemail(String email); // Hibernate generiert: SELECT * FROM user WHERE uemail = ?
+// Beispiel: UserRepository (aktuell CrudRepository<User, Integer>, nach Phase 1: JpaRepository<User, UUID>)
+public interface UserRepository extends CrudRepository<User, Integer> {
+    User findUserByUemail(String email); // Hibernate generiert: SELECT * FROM user WHERE uemail = ?
     // Der '?' wird als Parameter gebunden – SQL Injection unmöglich
 }
 ```
@@ -164,11 +164,12 @@ spring.datasource.password=${DB_PASSWORD:sicheres_passwort_hier_einsetzen}
 
 ```java
 // Beschreibungsfeld: Script-Tags explizit ausschliessen
+// ACHTUNG: Feldname ist pdescription (nicht pdesc!)
 @NotBlank
 @Size(max = 500)
 @Pattern(regexp = "^[^<>\"'&]*$",
          message = "Keine HTML-Sonderzeichen erlaubt")
-private String pdesc;
+private String pdescription;
 ```
 
 > **Hinweis:** Thymeleaf `th:text` ist die Hauptverteidigung gegen XSS. Die `@Pattern`-Validierung ist eine zusätzliche Schicht (Defence in Depth).
