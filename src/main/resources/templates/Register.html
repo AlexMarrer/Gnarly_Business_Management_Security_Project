@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>TEA : REGISTER</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="" th:href="@{/css/Navigation.css}" />
+    <link rel="stylesheet" href="" th:href="@{/css/Register.css}" />
+</head>
+
+<body>
+    <nav th:replace="~{Navigation::navbar()}"></nav>
+    <div class="RegisterContainer">
+        <div class="registerBox">
+            <div class="content">
+                <strong style="font-size: 16px; margin-bottom: 0px;">BUSINESS</strong>
+                <h2>Registrieren</h2>
+
+                <form th:action="@{/register}" th:object="${user}" method="post">
+
+                    <b>Name:</b>
+                    <input type="text" th:field="*{uname}" required minlength="2" maxlength="50"
+                           placeholder="Benutzername..." />
+                    <div th:if="${#fields.hasErrors('uname')}" th:errors="*{uname}" style="color:red;"></div>
+
+                    <b>E-Mail:</b>
+                    <input type="email" th:field="*{uemail}" required placeholder="E-Mail..." />
+                    <div th:if="${#fields.hasErrors('uemail')}" th:errors="*{uemail}" style="color:red;"></div>
+                    <div th:if="${emailExists}" th:text="${emailExists}" style="color:red;"></div>
+
+                    <b>Passwort:</b>
+                    <input type="password" th:field="*{upassword}" required minlength="8"
+                           pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$"
+                           title="Min. 8 Zeichen: Gross, Klein, Zahl, Sonderzeichen"
+                           placeholder="Passwort..." />
+                    <div th:if="${#fields.hasErrors('upassword')}" th:errors="*{upassword}" style="color:red;"></div>
+
+                    <b>Passwort bestätigen:</b>
+                    <input type="password" name="passwordConfirm" required minlength="8"
+                           placeholder="Passwort wiederholen..." />
+                    <div th:if="${passwordMismatch}" th:text="${passwordMismatch}" style="color:red;"></div>
+
+                    <b>Telefonnummer:</b>
+                    <input type="tel" th:field="*{unumber}" required pattern="\d{10,15}"
+                           title="10–15 Ziffern" placeholder="Telefonnummer..." />
+                    <div th:if="${#fields.hasErrors('unumber')}" th:errors="*{unumber}" style="color:red;"></div>
+
+                    <button type="submit" class="registerButton">Registrieren</button>
+                </form>
+
+                <p style="margin-top: 10px;">Bereits registriert? <a th:href="@{/login}">Hier einloggen</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

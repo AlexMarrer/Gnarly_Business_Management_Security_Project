@@ -35,9 +35,13 @@
 					<div th:if="${param.logout}" style="color: green; margin-top: 5px;">
 						Erfolgreich abgemeldet.
 					</div>
+					<div th:if="${param.registered}" style="color: green; margin-top: 5px;">
+						Registrierung erfolgreich! Bitte einloggen.
+					</div>
 					<br />
 					<button type="submit" class="loginButton">Log in</button>
 				</form>
+				<p style="margin-top: 10px;">Noch kein Konto? <a th:href="@{/register}" style="color: green;">Hier registrieren</a></p>
 			</div>
 		</div>
 	</div>

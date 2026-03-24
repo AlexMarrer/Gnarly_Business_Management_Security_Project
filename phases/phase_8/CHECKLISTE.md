@@ -3,28 +3,35 @@
 ## Aufgaben
 
 ### 8a – Register.html Template
-- [ ] Template erstellt mit allen Feldern
-- [ ] HTML5-Validierung (`required`, `pattern`, `minlength`)
-- [ ] `th:errors` Fehleranzeige
-- [ ] Link zurück zu Login
+- [x] Template erstellt mit allen Feldern
+- [x] HTML5-Validierung (`required`, `pattern`, `minlength`)
+- [x] `th:errors` Fehleranzeige
+- [x] Link zurück zu Login
 
 ### 8b – RegistrationController
-- [ ] `GET /register` → Formular anzeigen
-- [ ] `POST /register` → User anlegen
-- [ ] Passwort-Bestätigung prüfen
-- [ ] Duplikat-E-Mail prüfen
-- [ ] Redirect zu `/login?registered=true`
+- [x] `GET /register` → Formular anzeigen
+- [x] `POST /register` → User anlegen
+- [x] Passwort-Bestätigung prüfen
+- [x] Duplikat-E-Mail prüfen
+- [x] Redirect zu `/login?registered=true`
 
 ### 8c – SecurityConfig
-- [ ] `/register` in `permitAll()` aufgenommen
+- [x] `/register` in `permitAll()` aufgenommen
 
 ### 8d – Login-Seite
-- [ ] Link "Hier registrieren" eingefügt
-- [ ] Meldung nach erfolgreicher Registrierung
+- [x] Link "Hier registrieren" eingefügt
+- [x] Meldung nach erfolgreicher Registrierung
 
 ### 8e – CSS (optional)
-- [ ] `Register.css` erstellt
+- [x] `Register.css` erstellt
 
 ---
 
-## Status: Noch nicht begonnen
+## Abnahme-Tests (manuell durchzuführen)
+- [ ] Registrierungsformular erreichbar unter `/register`
+- [ ] Validierung: Name, E-Mail, Passwort-Komplexität, Telefonnummer
+- [ ] Passwort-Bestätigung wird geprüft
+- [ ] Duplikat-E-Mail wird abgefangen
+- [ ] Nach Registrierung: Redirect zu Login mit Erfolgsmeldung
+- [ ] Neuer User kann sich einloggen
+- [ ] Passwort in DB als BCrypt-Hash gespeichert (`$2a$12$...`)
