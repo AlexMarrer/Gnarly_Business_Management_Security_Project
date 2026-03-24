@@ -42,7 +42,7 @@ public class UserController {
 	}
 
 	@PreAuthorize("hasRole('ADMIN')")
-	@GetMapping("/deleteUser/{id}")
+	@PostMapping("/deleteUser/{id}")
 	public String deleteUser(@PathVariable("id") UUID id) {
 		this.services.deleteUser(id);
 		return "redirect:/admin/services";

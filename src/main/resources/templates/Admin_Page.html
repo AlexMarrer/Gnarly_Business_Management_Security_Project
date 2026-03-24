@@ -34,8 +34,11 @@
 						<td th:text="${admin.adminNumber}"></td>
 						<td><a style="color: blue;" href="" th:href="@{'/updateAdmin/'+${admin.id}}"><i
 									class="fa-solid fa-pen"></i></a><span>&nbsp;</span>
-							<a style="color: red;" href="" th:href="@{'/deleteAdmin/'+${admin.id}}"><i
-									class="fa-solid fa-trash"></i></a>
+							<form th:action="@{'/deleteAdmin/'+${admin.id}}" method="post" style="display:inline;">
+								<button type="submit" style="background:none; border:none; cursor:pointer; color:red; font:inherit; padding:0;">
+									<i class="fa-solid fa-trash"></i>
+								</button>
+							</form>
 						</td>
 					</tr>
 				</table>
@@ -59,8 +62,11 @@
 						<td th:text="${user.unumber}"></td>
 						<td><a style="color: blue;" href="" th:href="@{'/updateUser/'+${user.id}}"><i
 									class="fa-solid fa-pen"></i></a><span>&nbsp;</span>
-							<a style="color: red;" href="" th:href="@{'/deleteUser/'+${user.id}}"> <i
-									class="fa-solid fa-trash"></i></a>
+							<form th:action="@{'/deleteUser/'+${user.id}}" method="post" style="display:inline;">
+								<button type="submit" style="background:none; border:none; cursor:pointer; color:red; font:inherit; padding:0;">
+									<i class="fa-solid fa-trash"></i>
+								</button>
+							</form>
 						</td>
 					</tr>
 				</table>
@@ -83,8 +89,11 @@
 						<td th:text="${product.pprice}"></td>
 						<td><a style="color: blue;" href="" th:href="@{'/updateProduct/'+${product.id}}"><i
 									class="fa-solid fa-pen"></i></a><span>&nbsp;</span>
-							<a style="color: red;" href="" th:href="@{'/deleteProduct/'+${product.id}}"><i
-									class="fa-solid fa-trash"></i></a>
+							<form th:action="@{'/deleteProduct/'+${product.id}}" method="post" style="display:inline;">
+								<button type="submit" style="background:none; border:none; cursor:pointer; color:red; font:inherit; padding:0;">
+									<i class="fa-solid fa-trash"></i>
+								</button>
+							</form>
 						</td>
 					</tr>
 				</table>

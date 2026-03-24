@@ -35,7 +35,7 @@ public class DataLoader implements CommandLineRunner {
             admin.setAdminPassword(passwordEncoder.encode(defaultAdminPassword));
             admin.setAdminNumber(defaultAdminNumber);
             adminRepository.save(admin);
-            System.out.println("=== Initialer Admin angelegt: " + defaultAdminEmail + " / " + defaultAdminPassword + " ===");
+            System.out.println("=== Initialer Admin angelegt: " + defaultAdminEmail + " ===");
         }
     }
 }

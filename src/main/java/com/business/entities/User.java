@@ -16,6 +16,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Entity
+@jakarta.persistence.Table(name = "app_user")
 public class User {
 
 	@Id

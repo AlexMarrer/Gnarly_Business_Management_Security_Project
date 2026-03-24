@@ -133,7 +133,7 @@ public class AdminController {
 	}
 
 	@PreAuthorize("hasRole('ADMIN')")
-	@GetMapping("/deleteAdmin/{id}")
+	@PostMapping("/deleteAdmin/{id}")
 	public String deleteAdmin(@PathVariable("id") UUID id) {
 		this.adminServices.delete(id);
 		return "redirect:/admin/services";

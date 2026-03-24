@@ -31,11 +31,11 @@ public class RegistrationController {
                                BindingResult result,
                                @RequestParam("passwordConfirm") String passwordConfirm,
                                Model model) {
-        if (!user.getUpassword().equals(passwordConfirm)) {
-            model.addAttribute("passwordMismatch", "Passwörter stimmen nicht überein");
+        if (result.hasErrors()) {
             return "Register";
         }
-        if (result.hasErrors()) {
+        if (!user.getUpassword().equals(passwordConfirm)) {
+            model.addAttribute("passwordMismatch", "Passwörter stimmen nicht überein");
             return "Register";
         }
         if (userServices.getUserByEmail(user.getUemail()) != null) {
