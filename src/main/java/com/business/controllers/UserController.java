@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+
 import com.business.entities.User;
 import com.business.services.UserServices;
 
@@ -22,6 +24,7 @@ public class UserController {
 	@Autowired
 	private UserServices services;
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/addingUser")
 	public String addUser(@Valid @ModelAttribute("user") User user, BindingResult result) {
 		if (result.hasErrors()) {
@@ -31,12 +34,14 @@ public class UserController {
 		return "redirect:/admin/services";
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/updatingUser/{id}")
 	public String updateUser(@ModelAttribute User user, @PathVariable("id") UUID id) {
 		this.services.updateUser(user, id);
 		return "redirect:/admin/services";
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/deleteUser/{id}")
 	public String deleteUser(@PathVariable("id") UUID id) {
 		this.services.deleteUser(id);

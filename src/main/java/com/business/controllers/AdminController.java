@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -42,7 +43,7 @@ public class AdminController {
 
 	// --- User-facing endpoints (ROLE_USER) ---
 
-	// Searching Product By Name
+	@PreAuthorize("hasRole('USER')")
 	@PostMapping("/product/search")
 	public String searchHandler(@RequestParam("productName") String name,
 			@AuthenticationPrincipal UserDetails principal, Model model) {
@@ -60,7 +61,7 @@ public class AdminController {
 		return "BuyProduct";
 	}
 
-	// Placing Order
+	@PreAuthorize("hasRole('USER')")
 	@PostMapping("/product/order")
 	public String orderHandler(@ModelAttribute() Orders order,
 			@AuthenticationPrincipal UserDetails principal, Model model) {
@@ -73,7 +74,7 @@ public class AdminController {
 		return "Order_success";
 	}
 
-	// User landing page / back to BuyProduct
+	@PreAuthorize("hasRole('USER')")
 	@GetMapping("/product/back")
 	public String back(@AuthenticationPrincipal UserDetails principal, Model model) {
 		User currentUser = services.getUserByEmail(principal.getUsername());
@@ -85,7 +86,7 @@ public class AdminController {
 
 	// --- Admin-facing endpoints (ROLE_ADMIN) ---
 
-	// Admin services dashboard
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/admin/services")
 	public String returnBack(Model model) {
 		List<User> users = this.services.getAllUser();
@@ -99,14 +100,14 @@ public class AdminController {
 		return "Admin_Page";
 	}
 
-	// Invoking addAdmin Page
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/addAdmin")
 	public String addAdminPage(Model model) {
 		model.addAttribute("admin", new Admin());
 		return "Add_Admin";
 	}
 
-	// Handling AddAdmin
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("addingAdmin")
 	public String addAdmin(@Valid @ModelAttribute("admin") Admin admin, BindingResult result) {
 		if (result.hasErrors()) {
@@ -116,7 +117,7 @@ public class AdminController {
 		return "redirect:/admin/services";
 	}
 
-	// Invoking updateAdmin Page
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/updateAdmin/{adminId}")
 	public String update(@PathVariable("adminId") UUID id, Model model) {
 		Admin admin = this.adminServices.getAdmin(id);
@@ -124,28 +125,28 @@ public class AdminController {
 		return "Update_Admin";
 	}
 
-	// Handling Update Admin
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/updatingAdmin/{id}")
 	public String updateAdmin(@ModelAttribute Admin admin, @PathVariable("id") UUID id) {
 		this.adminServices.update(admin, id);
 		return "redirect:/admin/services";
 	}
 
-	// Handling delete operation
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/deleteAdmin/{id}")
 	public String deleteAdmin(@PathVariable("id") UUID id) {
 		this.adminServices.delete(id);
 		return "redirect:/admin/services";
 	}
 
-	// Invoking AddProduct Page
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/addProduct")
 	public String addProduct(Model model) {
 		model.addAttribute("product", new Product());
 		return "Add_Product";
 	}
 
-	// Invoking Update Product Page
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/updateProduct/{productId}")
 	public String updateProduct(@PathVariable("productId") UUID id, Model model) {
 		Product product = this.productServices.getProduct(id);
@@ -153,14 +154,14 @@ public class AdminController {
 		return "Update_Product";
 	}
 
-	// Invoking AddUser Page
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/addUser")
 	public String addUser(Model model) {
 		model.addAttribute("user", new User());
 		return "Add_User";
 	}
 
-	// Invoking UpdateUser Page
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/updateUser/{userId}")
 	public String updateUserPage(@PathVariable("userId") UUID id, Model model) {
 		User user = this.services.getUser(id);

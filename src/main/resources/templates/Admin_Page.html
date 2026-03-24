@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
 	<meta charset="UTF-8" />
@@ -10,6 +11,7 @@
 </head>
 
 <body>
+	<div sec:authorize="hasRole('ADMIN')">
 	<form th:action="@{/logout}" method="post" style="display:inline;">
 		<button type="submit" class="back" style="cursor:pointer; font:inherit;">Logout</button>
 	</form>
@@ -115,6 +117,7 @@
 		</div>
 		</section>
 	</center>
+	</div>
 
 </body>
 
