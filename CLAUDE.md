@@ -78,3 +78,7 @@ The phases directory contains detailed plans for each phase:
 - `SECURITY_REQUIREMENTS.md` — Grading criteria; Criterion 2 (Auth/Authorization) and Criterion 3 (Login) are double-weighted
 - `TECHNICAL_REFERENCE.md` — Ready-to-use code patterns: `SecurityConfig`, `PepperPasswordEncoder`, entity validation annotations
 - `phases/PHASE_*.md` — Step-by-step instructions for each implementation phase
+
+## Code Style
+
+- Keine Kommentare im Code, ausser wo die Logik nicht selbsterklärend ist
