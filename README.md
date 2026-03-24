@@ -15,7 +15,7 @@
 - **Customer Management**: Easily add, update, and delete customer information.
 - **Inventory Management**: Keep track of your inventory items, including stock levels and pricing.
 - **Order Management**: Manage customer orders such as order creation .
-- **User Authentication**: NOT Secure login and authentication for admin and staff members.
+- **User Authentication**: SOON Secure login and authentication for admin and staff members.
 - **Role-Based Access Control**: Define roles and permissions for different user types.
 - **Thymeleaf Templates**: Utilizes Thymeleaf for dynamic HTML templates.
 - **Database Integration**: Integrated with MySQL for data storage.
