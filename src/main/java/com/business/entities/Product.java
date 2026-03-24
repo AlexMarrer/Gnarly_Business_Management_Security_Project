@@ -12,6 +12,7 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -23,6 +24,7 @@ public class Product {
 
 	@NotBlank(message = "Produktname ist erforderlich")
 	@Size(min = 2, max = 100, message = "Produktname: 2–100 Zeichen")
+	@Pattern(regexp = "^[^<>\"'&]*$", message = "Keine HTML-Sonderzeichen erlaubt")
 	@Column(length = 100, nullable = false)
 	private String pname;
 
@@ -33,6 +35,7 @@ public class Product {
 
 	@NotBlank(message = "Beschreibung ist erforderlich")
 	@Size(max = 500, message = "Beschreibung: max. 500 Zeichen")
+	@Pattern(regexp = "^[^<>\"'&]*$", message = "Keine HTML-Sonderzeichen erlaubt")
 	@Column(length = 500)
 	private String pdescription;
 

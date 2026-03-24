@@ -24,6 +24,7 @@ public class User {
 
 	@NotBlank(message = "Benutzername ist erforderlich")
 	@Size(min = 2, max = 50, message = "Benutzername: 2–50 Zeichen")
+	@Pattern(regexp = "^[^<>\"'&]*$", message = "Keine HTML-Sonderzeichen erlaubt")
 	@Column(length = 50, nullable = false)
 	private String uname;
 

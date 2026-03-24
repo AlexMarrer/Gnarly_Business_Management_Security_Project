@@ -21,6 +21,7 @@ public class Admin {
 
 	@NotBlank(message = "Admin-Name ist erforderlich")
 	@Size(min = 2, max = 50, message = "Admin-Name: 2–50 Zeichen")
+	@Pattern(regexp = "^[^<>\"'&]*$", message = "Keine HTML-Sonderzeichen erlaubt")
 	@Column(length = 50, nullable = false)
 	private String adminName;
 
