@@ -1,133 +1,126 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ADMIN PAGE :</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="stylesheet" href="" th:href="@{/css/Admin_page.css}" />
+  </head>
 
-<head>
-	<meta charset="UTF-8" />
-	<title>ADMIN PAGE :</title>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-	<link rel="stylesheet" href="" th:href="@{/css/Admin_page.css}" />
+  <body>
+    <div sec:authorize="hasRole('ADMIN')">
+      <form th:action="@{/logout}" method="post" style="display: inline">
+        <button type="submit" class="back" style="cursor: pointer; font: inherit">Logout</button>
+      </form>
+      <center>
+        <section class="tables">
+          <div class="admins">
+            <h2>Admins :</h2>
+            <table>
+              <tr>
+                <th>Admin_Id</th>
+                <th>Admin_Name</th>
+                <th>Admin_Email</th>
+                <th>Admin_Number</th>
+                <th>Actions</th>
+              </tr>
+              <tr th:each="admin :${admins}">
+                <td th:text="${admin.id}"></td>
+                <td th:text="${admin.adminName}"></td>
+                <td th:text="${admin.adminEmail}"></td>
+                <td th:text="${admin.adminNumber}"></td>
+                <td>
+                  <a style="color: blue" href="" th:href="@{'/updateAdmin/'+${admin.id}}"><i class="fa-solid fa-pen"></i></a><span>&nbsp;</span>
+                  <form th:action="@{'/deleteAdmin/'+${admin.id}}" method="post" style="display: inline">
+                    <button type="submit" style="background: none; border: none; cursor: pointer; color: red; font: inherit; padding: 0">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </form>
+                </td>
+              </tr>
+            </table>
+            <a href="" class="btns" th:href="@{/addAdmin}">Add_Admin</a>
+          </div>
 
-</head>
+          <div class="users">
+            <h2>Users :</h2>
+            <table>
+              <tr>
+                <th>User_Id</th>
+                <th>User_Name</th>
+                <th>User_Email</th>
+                <th>User_Number</th>
+                <th>Actions</th>
+              </tr>
+              <tr th:each="user :${users}">
+                <td th:text="${user.id}"></td>
+                <td th:text="${user.uname}"></td>
+                <td th:text="${user.uemail}"></td>
+                <td th:text="${user.unumber}"></td>
+                <td>
+                  <a style="color: blue" href="" th:href="@{'/updateUser/'+${user.id}}"><i class="fa-solid fa-pen"></i></a><span>&nbsp;</span>
+                  <form th:action="@{'/deleteUser/'+${user.id}}" method="post" style="display: inline">
+                    <button type="submit" style="background: none; border: none; cursor: pointer; color: red; font: inherit; padding: 0">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </form>
+                </td>
+              </tr>
+            </table>
+            <a href="" class="btns" th:href="@{'/addUser'}">Add_User</a>
+          </div>
 
-<body>
-	<div sec:authorize="hasRole('ADMIN')">
-	<form th:action="@{/logout}" method="post" style="display:inline;">
-		<button type="submit" class="back" style="cursor:pointer; font:inherit;">Logout</button>
-	</form>
-	<center>
-		<section class="tables">
-			<div class="admins">
-				<h2>Admins :</h2>
-				<table>
-					<tr>
-						<th>Admin_Id</th>
-						<th>Admin_Name</th>
-						<th>Admin_Email</th>
-						<th>Admin_Number</th>
-						<th>Actions</th>
-					</tr>
-					<tr th:each="admin :${admins}">
-						<td th:text="${admin.id}"></td>
-						<td th:text="${admin.adminName}"></td>
-						<td th:text="${admin.adminEmail}"></td>
-						<td th:text="${admin.adminNumber}"></td>
-						<td><a style="color: blue;" href="" th:href="@{'/updateAdmin/'+${admin.id}}"><i
-									class="fa-solid fa-pen"></i></a><span>&nbsp;</span>
-							<form th:action="@{'/deleteAdmin/'+${admin.id}}" method="post" style="display:inline;">
-								<button type="submit" style="background:none; border:none; cursor:pointer; color:red; font:inherit; padding:0;">
-									<i class="fa-solid fa-trash"></i>
-								</button>
-							</form>
-						</td>
-					</tr>
-				</table>
-				<a href="" class="btns" th:href="@{/addAdmin}">Add_Admin</a>
-			</div>
+          <div class="products">
+            <h2>Products :</h2>
+            <table>
+              <tr>
+                <th>Product_Id</th>
+                <th>Product_Name</th>
+                <th>Product_Price</th>
+                <th>Actions</th>
+              </tr>
+              <tr th:each="product :${products}">
+                <td th:text="${product.id}"></td>
+                <td th:text="${product.pname}"></td>
+                <td th:text="${product.pprice}"></td>
+                <td>
+                  <a style="color: blue" href="" th:href="@{'/updateProduct/'+${product.id}}"><i class="fa-solid fa-pen"></i></a><span>&nbsp;</span>
+                  <form th:action="@{'/deleteProduct/'+${product.id}}" method="post" style="display: inline">
+                    <button type="submit" style="background: none; border: none; cursor: pointer; color: red; font: inherit; padding: 0">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </form>
+                </td>
+              </tr>
+            </table>
+            <a href="" class="btns" th:href="@{'/addProduct'}">Add_Product</a>
+          </div>
 
-			<div class="users">
-				<h2>Users :</h2>
-				<table>
-					<tr>
-						<th>User_Id</th>
-						<th>User_Name</th>
-						<th>User_Email</th>
-						<th>User_Number</th>
-						<th>Actions</th>
-					</tr>
-					<tr th:each="user :${users}">
-						<td th:text="${user.id}"></td>
-						<td th:text="${user.uname}"></td>
-						<td th:text="${user.uemail}"></td>
-						<td th:text="${user.unumber}"></td>
-						<td><a style="color: blue;" href="" th:href="@{'/updateUser/'+${user.id}}"><i
-									class="fa-solid fa-pen"></i></a><span>&nbsp;</span>
-							<form th:action="@{'/deleteUser/'+${user.id}}" method="post" style="display:inline;">
-								<button type="submit" style="background:none; border:none; cursor:pointer; color:red; font:inherit; padding:0;">
-									<i class="fa-solid fa-trash"></i>
-								</button>
-							</form>
-						</td>
-					</tr>
-				</table>
-				<a href="" class="btns" th:href="@{'/addUser'}">Add_User</a>
-			</div>
-
-
-			<div class="products">
-				<h2>Products :</h2>
-				<table>
-					<tr>
-						<th>Product_Id</th>
-						<th>Product_Name</th>
-						<th>Product_Price</th>
-						<th>Actions</th>
-					</tr>
-					<tr th:each="product :${products}">
-						<td th:text="${product.id}"></td>
-						<td th:text="${product.pname}"></td>
-						<td th:text="${product.pprice}"></td>
-						<td><a style="color: blue;" href="" th:href="@{'/updateProduct/'+${product.id}}"><i
-									class="fa-solid fa-pen"></i></a><span>&nbsp;</span>
-							<form th:action="@{'/deleteProduct/'+${product.id}}" method="post" style="display:inline;">
-								<button type="submit" style="background:none; border:none; cursor:pointer; color:red; font:inherit; padding:0;">
-									<i class="fa-solid fa-trash"></i>
-								</button>
-							</form>
-						</td>
-					</tr>
-				</table>
-				<a href="" class="btns" th:href="@{'/addProduct'}">Add_Product</a>
-			</div>
-
-			<div class="details">
-				<h2>Orders :</h2>
-			<table >
-				<tr>
-					<th>User_Name</th>
-					<th>User_Email</th>
-					<th>Product_Name</th>
-					<th>Product_Price</th>
-					<th>Product_Quantity</th>
-					<th>Total_Amount</th>
-					<th>Date</th>
-				</tr>
-				<tr th:each="order :${orders}">
-					<td th:text="${order.user.uname}"></td>
-					<td th:text="${order.user.uemail}"></td>
-					<td th:text="${order.oName}"></td>
-					<td th:text="${order.oPrice}"></td>
-					<td th:text="${order.oQuantity}"></td>
-					<td th:text="${order.totalAmount}"></td>
-					<td th:text="${order.orderDate}"></td>
-
-				</tr>
-			</table>
-		</div>
-		</section>
-	</center>
-	</div>
-
-</body>
-
+          <div class="details">
+            <h2>Orders :</h2>
+            <table>
+              <tr>
+                <th>User_Name</th>
+                <th>User_Email</th>
+                <th>Product_Name</th>
+                <th>Product_Price</th>
+                <th>Product_Quantity</th>
+                <th>Total_Amount</th>
+                <th>Date</th>
+              </tr>
+              <tr th:each="order :${orders}">
+                <td th:text="${order.user.uname}"></td>
+                <td th:text="${order.user.uemail}"></td>
+                <td th:text="${order.oName}"></td>
+                <td th:text="${order.oPrice}"></td>
+                <td th:text="${order.oQuantity}"></td>
+                <td th:text="${order.totalAmount}"></td>
+                <td th:text="${order.orderDate}"></td>
+              </tr>
+            </table>
+          </div>
+        </section>
+      </center>
+    </div>
+  </body>
 </html>
