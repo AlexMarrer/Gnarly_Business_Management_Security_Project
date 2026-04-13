@@ -11,11 +11,14 @@
 		<h3 style="color: red;"> UPDATE EXISTING USER/CUSTOMER </h3>
 		<form action="" th:action="@{'/updatingUser/'+${user.id}}" th:object="${user}" method="post">
 			User_Name :
-			<input type="text" name="uname" th:value="${user.uname}" required minlength="2" maxlength="50" />
+			<input type="text" th:field="*{uname}" required minlength="2" maxlength="50" />
+			<span th:if="${#fields.hasErrors('uname')}" th:errors="*{uname}" style="color:red;"></span>
 			User_Email :
-			<input type="email" name="uemail" th:value="${user.uemail}" required />
+			<input type="email" th:field="*{uemail}" required />
+			<span th:if="${#fields.hasErrors('uemail')}" th:errors="*{uemail}" style="color:red;"></span>
 			User_Number :
-			<input type="tel" name="unumber" th:value="${user.unumber}" pattern="\d{10,15}" required />
+			<input type="tel" th:field="*{unumber}" pattern="\d{10,15}" required />
+			<span th:if="${#fields.hasErrors('unumber')}" th:errors="*{unumber}" style="color:red;"></span>
 
 			<button type="submit">Update_User</button>
 		</form>

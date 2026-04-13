@@ -11,11 +11,14 @@
 		<h3 style="color: red;">UPDATE EXISTING ADMIN / PARTNER DETAILS</h3>
 		<form action="" th:action="@{'/updatingAdmin/'+${admin.id}}" th:object="${admin}" method="post">
 			Admin_Name :
-			<input type="text" name="adminName" th:value="${admin.adminName}" required minlength="2" maxlength="50" /><br />
+			<input type="text" th:field="*{adminName}" required minlength="2" maxlength="50" /><br />
+			<span th:if="${#fields.hasErrors('adminName')}" th:errors="*{adminName}" style="color:red;"></span>
 			Admin_Number :
-			<input type="tel" name="adminNumber" th:value="${admin.adminNumber}" pattern="\d{10,15}" required /> <br />
+			<input type="tel" th:field="*{adminNumber}" pattern="\d{10,15}" required /> <br />
+			<span th:if="${#fields.hasErrors('adminNumber')}" th:errors="*{adminNumber}" style="color:red;"></span>
 			Admin_Email :
-			<input type="email" name="adminEmail" th:value="${admin.adminEmail}" required /> <br />
+			<input type="email" th:field="*{adminEmail}" required /> <br />
+			<span th:if="${#fields.hasErrors('adminEmail')}" th:errors="*{adminEmail}" style="color:red;"></span>
 
 			<button type="submit">Update_Admin</button>
 		</form>

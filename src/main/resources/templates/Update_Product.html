@@ -13,12 +13,15 @@
 		<h3 style="font-weight: bolder;color: seagreen;">UPDATE EXISTING PRODUCT :</h3>
 		<form action="" th:action="@{'/updatingProduct/'+${product.id}}" th:object="${product}" method="post">
 			Product_Name :
-			<input type="text" name="pname" th:value="${product.pname}" required minlength="2" maxlength="100" /> <br />
+			<input type="text" th:field="*{pname}" required minlength="2" maxlength="100" /> <br />
+			<span th:if="${#fields.hasErrors('pname')}" th:errors="*{pname}" style="color:red;"></span>
 			Product_Price :
-			<input type="number" name="pprice" th:value="${product.pprice}" required min="0.01" step="0.01" /><br />
+			<input type="number" th:field="*{pprice}" required min="0.01" step="0.01" /><br />
+			<span th:if="${#fields.hasErrors('pprice')}" th:errors="*{pprice}" style="color:red;"></span>
 			Product_Desc : <br />
-			<textarea name="pdescription" th:text="${product.pdescription}" cols="10" rows="1"
+			<textarea th:field="*{pdescription}" cols="10" rows="1"
 				required maxlength="500"></textarea><br />
+			<span th:if="${#fields.hasErrors('pdescription')}" th:errors="*{pdescription}" style="color:red;"></span>
 			<button type="submit">Update_Product</button>
 		</form>
 	</div>
