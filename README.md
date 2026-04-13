@@ -6,13 +6,12 @@ Webapplikation zur Geschäftsverwaltung (Kunden, Produkte, Bestellungen) mit umf
 
 ## Voraussetzungen
 
-| Software | Version      | Hinweis |
-|----------|--------------|---------|
-| Java JDK | 25   | LTS-Version |
-| MySQL / MariaDB | 5.7+ / 10.5+ | Lokal oder via XAMPP |
-| Git | beliebig     | Zum Klonen des Repos |
-
-> Maven muss **nicht** separat installiert werden – der mitgelieferte Maven Wrapper (`mvnw` / `mvnw.cmd`) erledigt das automatisch.
+| Software        | Version      | Hinweis                                                                                                    |
+| --------------- | ------------ | ---------------------------------------------------------------------------------------------------------- |
+| Java JDK        | 25           | LTS-Version                                                                                                |
+| MySQL / MariaDB | 5.7+ / 10.5+ | Lokal oder via XAMPP                                                                                       |
+| Maven           | 3.8+         | [maven.apache.org](https://maven.apache.org/download.cgi) herunterladen und `mvn` im PATH verfügbar machen |
+| Git             | beliebig     | Zum Klonen des Repos                                                                                       |
 
 ---
 
@@ -37,18 +36,11 @@ CREATE DATABASE IF NOT EXISTS businessproject;
 
 ### 3. Applikation starten
 
-**Linux (Manjaro / Ubuntu):**
 ```bash
-chmod +x mvnw
-./mvnw spring-boot:run
+mvn spring-boot:run
 ```
 
-**Windows (CMD / PowerShell):**
-```cmd
-mvnw.cmd spring-boot:run
-```
-
-Beim ersten Start wird der Maven Wrapper alle nötigen Dependencies herunterladen – das kann 1-2 Minuten dauern.
+Beim ersten Start werden alle nötigen Dependencies heruntergeladen – das kann 1-2 Minuten dauern.
 
 > **Stoppen:** Mit `Ctrl+C` im Terminal wird die Applikation beendet (Graceful Shutdown).
 
@@ -62,10 +54,10 @@ http://localhost:2330
 
 Beim ersten Start wird automatisch ein Admin-Account erstellt:
 
-| Feld | Wert |
-|------|------|
-| E-Mail | `admin@business.com` |
-| Passwort | `Admin123!` |
+| Feld     | Wert                 |
+| -------- | -------------------- |
+| E-Mail   | `admin@business.com` |
+| Passwort | `Admin123!`          |
 
 Über das Admin-Panel können weitere Admins, User und Produkte verwaltet werden. User können sich auch selbst über `/register` registrieren.
 
@@ -76,13 +68,15 @@ Beim ersten Start wird automatisch ein Admin-Account erstellt:
 ### Windows
 
 **Java installieren:**
+
 1. [Adoptium JDK 25](https://adoptium.net/) herunterladen und installieren
 2. Installer wählt automatisch `JAVA_HOME` – bei manuellem Setup:
-    - Systemumgebungsvariable `JAVA_HOME` auf den JDK-Ordner setzen (z.B. `C:\Program Files\Eclipse Adoptium\jdk-25`)
-    - `%JAVA_HOME%\bin` zu `Path` hinzufügen
+   - Systemumgebungsvariable `JAVA_HOME` auf den JDK-Ordner setzen (z.B. `C:\Program Files\Eclipse Adoptium\jdk-25`)
+   - `%JAVA_HOME%\bin` zu `Path` hinzufügen
 3. Prüfen: `java --version`
 
 **MySQL via XAMPP:**
+
 1. [XAMPP](https://www.apachefriends.org/) installieren
 2. XAMPP Control Panel starten → **MySQL** starten
 3. phpMyAdmin öffnen (`http://localhost/phpmyadmin`) → neue Datenbank `businessproject` anlegen
@@ -125,17 +119,20 @@ sudo mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS businessproject;"
 ## Konfiguration
 
 Die Standartkonfiguration in `src/main/resources/application.properties` funktioniert out-of-the-box mit:
+
 - DB-User: `root` / Passwort: `root`
 - Port: `2330`
 
 Falls dein MySQL-Setup ein anderes Passwort hat, kannst du es per Umgebungsvariable überschreiben:
 
 **Linux:**
+
 ```bash
 DB_PASSWORD=meinpasswort ./mvnw spring-boot:run
 ```
 
 **Windows (CMD):**
+
 ```cmd
 set DB_PASSWORD=meinpasswort
 mvnw.cmd spring-boot:run
@@ -143,13 +140,13 @@ mvnw.cmd spring-boot:run
 
 Alle konfigurierbaren Umgebungsvariablen:
 
-| Variable | Default | Beschreibung                  |
-|----------|---------|-------------------------------|
-| `DB_USERNAME` | `root` | Datenbank-Benutzername        |
-| `DB_PASSWORD` | `root` | Datenbank-Passwort            |
-| `PEPPER_SECRET` | (interner Default) | Pepper für Passwort-Hashing   |
-| `ADMIN_EMAIL` | `admin@business.com` | E-Mail des initialen Admins   |
-| `ADMIN_PASSWORD` | `Admin123!` | Passwort des initialen Admins |
+| Variable         | Default              | Beschreibung                  |
+| ---------------- | -------------------- | ----------------------------- |
+| `DB_USERNAME`    | `root`               | Datenbank-Benutzername        |
+| `DB_PASSWORD`    | `root`               | Datenbank-Passwort            |
+| `PEPPER_SECRET`  | (interner Default)   | Pepper für Passwort-Hashing   |
+| `ADMIN_EMAIL`    | `admin@business.com` | E-Mail des initialen Admins   |
+| `ADMIN_PASSWORD` | `Admin123!`          | Passwort des initialen Admins |
 
 ---
 
