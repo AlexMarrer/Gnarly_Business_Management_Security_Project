@@ -1,16 +1,16 @@
 # Gnarly Business Management – Security Project
 
-Webapplikation zur Geschaeftsverwaltung (Kunden, Produkte, Bestellungen) mit umfassender Sicherheitsimplementierung im Rahmen des Moduls M183 (Applikationssicherheit) an der BBZ BL.
+Webapplikation zur Geschäftsverwaltung (Kunden, Produkte, Bestellungen) mit umfassender Sicherheitsimplementierung im Rahmen des Moduls M183 (Applikationssicherheit) an der BBZ BL.
 
-**Team:** Alex Uscata & Furkan Guener
+**Team:** Alex Uscata & Furkan Güner
 
 ## Voraussetzungen
 
-| Software | Version | Hinweis |
-|----------|---------|---------|
-| Java JDK | 21 | LTS-Version |
+| Software | Version      | Hinweis |
+|----------|--------------|---------|
+| Java JDK | 25   | LTS-Version |
 | MySQL / MariaDB | 5.7+ / 10.5+ | Lokal oder via XAMPP |
-| Git | beliebig | Zum Klonen des Repos |
+| Git | beliebig     | Zum Klonen des Repos |
 
 > Maven muss **nicht** separat installiert werden – der mitgelieferte Maven Wrapper (`mvnw` / `mvnw.cmd`) erledigt das automatisch.
 
@@ -27,7 +27,7 @@ cd Gnarly_Business_Management_Security_Project
 
 ### 2. Datenbank einrichten
 
-Starte MySQL/MariaDB (z.B. ueber XAMPP, systemd oder den Installer) und erstelle die Datenbank:
+Starte MySQL/MariaDB (z.B. über XAMPP, systemd oder den Installer) und erstelle die Datenbank:
 
 ```sql
 CREATE DATABASE IF NOT EXISTS businessproject;
@@ -48,7 +48,7 @@ chmod +x mvnw
 mvnw.cmd spring-boot:run
 ```
 
-Beim ersten Start wird der Maven Wrapper alle noetigen Dependencies herunterladen – das kann 1-2 Minuten dauern.
+Beim ersten Start wird der Maven Wrapper alle nötigen Dependencies herunterladen – das kann 1-2 Minuten dauern.
 
 > **Stoppen:** Mit `Ctrl+C` im Terminal wird die Applikation beendet (Graceful Shutdown).
 
@@ -67,7 +67,7 @@ Beim ersten Start wird automatisch ein Admin-Account erstellt:
 | E-Mail | `admin@business.com` |
 | Passwort | `Admin123!` |
 
-Ueber das Admin-Panel koennen weitere Admins, User und Produkte verwaltet werden. User koennen sich auch selbst ueber `/register` registrieren.
+Über das Admin-Panel können weitere Admins, User und Produkte verwaltet werden. User können sich auch selbst über `/register` registrieren.
 
 ---
 
@@ -76,23 +76,23 @@ Ueber das Admin-Panel koennen weitere Admins, User und Produkte verwaltet werden
 ### Windows
 
 **Java installieren:**
-1. [Adoptium JDK 21](https://adoptium.net/) herunterladen und installieren
-2. Installer waehlt automatisch `JAVA_HOME` – bei manuellem Setup:
-   - Systemumgebungsvariable `JAVA_HOME` auf den JDK-Ordner setzen (z.B. `C:\Program Files\Eclipse Adoptium\jdk-21`)
-   - `%JAVA_HOME%\bin` zu `Path` hinzufuegen
-3. Pruefen: `java --version`
+1. [Adoptium JDK 25](https://adoptium.net/) herunterladen und installieren
+2. Installer wählt automatisch `JAVA_HOME` – bei manuellem Setup:
+   - Systemumgebungsvariable `JAVA_HOME` auf den JDK-Ordner setzen (z.B. `C:\Program Files\Eclipse Adoptium\jdk-25`)
+   - `%JAVA_HOME%\bin` zu `Path` hinzufügen
+3. Prüfen: `java --version`
 
 **MySQL via XAMPP:**
 1. [XAMPP](https://www.apachefriends.org/) installieren
 2. XAMPP Control Panel starten → **MySQL** starten
-3. phpMyAdmin oeffnen (`http://localhost/phpmyadmin`) → neue Datenbank `businessproject` anlegen
+3. phpMyAdmin öffnen (`http://localhost/phpmyadmin`) → neue Datenbank `businessproject` anlegen
 
 ### Linux – Manjaro
 
 ```bash
 # Java 21
-sudo pacman -S jdk21-openjdk
-sudo archlinux-java set java-21-openjdk
+sudo pacman -S jdk25-openjdk
+sudo archlinux-java set java-25-openjdk
 
 # MariaDB
 sudo pacman -S mariadb
@@ -107,9 +107,9 @@ sudo mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS businessproject;"
 ### Linux – Ubuntu
 
 ```bash
-# Java 21
+# Java 25
 sudo apt update
-sudo apt install openjdk-21-jdk
+sudo apt install openjdk-25-jdk
 
 # MySQL
 sudo apt install mysql-server
@@ -124,11 +124,11 @@ sudo mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS businessproject;"
 
 ## Konfiguration
 
-Die Standardkonfiguration in `src/main/resources/application.properties` funktioniert out-of-the-box mit:
+Die Standartkonfiguration in `src/main/resources/application.properties` funktioniert out-of-the-box mit:
 - DB-User: `root` / Passwort: `root`
 - Port: `2330`
 
-Falls dein MySQL-Setup ein anderes Passwort hat, kannst du es per Umgebungsvariable ueberschreiben:
+Falls dein MySQL-Setup ein anderes Passwort hat, kannst du es per Umgebungsvariable überschreiben:
 
 **Linux:**
 ```bash
@@ -143,12 +143,12 @@ mvnw.cmd spring-boot:run
 
 Alle konfigurierbaren Umgebungsvariablen:
 
-| Variable | Default | Beschreibung |
-|----------|---------|-------------|
-| `DB_USERNAME` | `root` | Datenbank-Benutzername |
-| `DB_PASSWORD` | `root` | Datenbank-Passwort |
-| `PEPPER_SECRET` | (interner Default) | Pepper fuer Passwort-Hashing |
-| `ADMIN_EMAIL` | `admin@business.com` | E-Mail des initialen Admins |
+| Variable | Default | Beschreibung                  |
+|----------|---------|-------------------------------|
+| `DB_USERNAME` | `root` | Datenbank-Benutzername        |
+| `DB_PASSWORD` | `root` | Datenbank-Passwort            |
+| `PEPPER_SECRET` | (interner Default) | Pepper für Passwort-Hashing   |
+| `ADMIN_EMAIL` | `admin@business.com` | E-Mail des initialen Admins   |
 | `ADMIN_PASSWORD` | `Admin123!` | Passwort des initialen Admins |
 
 ---
@@ -181,7 +181,7 @@ Alle konfigurierbaren Umgebungsvariablen:
 ## Technologie-Stack
 
 - Spring Boot 3.4.3
-- Java 21
+- Java 25
 - Thymeleaf + Spring Security 6
 - MySQL / MariaDB
 - Hibernate (JPA)
