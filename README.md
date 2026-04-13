@@ -1,117 +1,187 @@
-# Business Management Web Application : <br>
+# Gnarly Business Management – Security Project
 
-![home (2)](https://github.com/SuhasKamate/Business_Management_Project/assets/126138738/e8db8f17-72d6-42a0-b264-def0bf883bbf)
+Webapplikation zur Geschaeftsverwaltung (Kunden, Produkte, Bestellungen) mit umfassender Sicherheitsimplementierung im Rahmen des Moduls M183 (Applikationssicherheit) an der BBZ BL.
 
+**Team:** Alex Uscata & Furkan Guener
 
+## Voraussetzungen
 
-## Project Desc : Business Management Web Application 
-  => The Business Management Web Application is a comprehensive tool designed to help businesses manage various aspects of their operations. 
-          It provides a user-friendly interface for tasks like managing customer data, inventory, orders, and more.
+| Software | Version | Hinweis |
+|----------|---------|---------|
+| Java JDK | 21 | LTS-Version |
+| MySQL / MariaDB | 5.7+ / 10.5+ | Lokal oder via XAMPP |
+| Git | beliebig | Zum Klonen des Repos |
 
+> Maven muss **nicht** separat installiert werden – der mitgelieferte Maven Wrapper (`mvnw` / `mvnw.cmd`) erledigt das automatisch.
 
+---
 
-## Features  :
+## Schnellstart
 
-- **Customer Management**: Easily add, update, and delete customer information.
-- **Inventory Management**: Keep track of your inventory items, including stock levels and pricing.
-- **Order Management**: Manage customer orders such as order creation .
-- **User Authentication**: Secure login and authentication for admin and staff members.
-- **Role-Based Access Control**: Define roles and permissions for different user types.
-- **Thymeleaf Templates**: Utilizes Thymeleaf for dynamic HTML templates.
-- **Database Integration**: Integrated with MySQL for data storage.
+### 1. Repository klonen
 
+```bash
+git clone https://github.com/AlexMarrer/Gnarly_Business_Management_Security_Project.git
+cd Gnarly_Business_Management_Security_Project
+```
 
+### 2. Datenbank einrichten
 
+Starte MySQL/MariaDB (z.B. ueber XAMPP, systemd oder den Installer) und erstelle die Datenbank:
 
-## Technologies Used :
+```sql
+CREATE DATABASE IF NOT EXISTS businessproject;
+```
 
-- Spring Boot: Backend framework for building Java-based web applications.
-- Thymeleaf: Server-side Java template engine for dynamic HTML generation.
-- MySQL: Relational database management system for data storage.
-- IDE/Tool : Spring Tool Suite 4 (Eclipse)
+> Die Tabellen werden beim ersten Start automatisch von Hibernate erstellt (`ddl-auto=update`).
 
+### 3. Applikation starten
 
+**Linux (Manjaro / Ubuntu):**
+```bash
+chmod +x mvnw
+./mvnw spring-boot:run
+```
 
+**Windows (CMD / PowerShell):**
+```cmd
+mvnw.cmd spring-boot:run
+```
 
-## Installation :
+Beim ersten Start wird der Maven Wrapper alle noetigen Dependencies herunterladen – das kann 1-2 Minuten dauern.
 
-1. Clone the repository : $ git clone https://github.com/SuhasKamate/Business_Management_Project.git <br>
+> **Stoppen:** Mit `Ctrl+C` im Terminal wird die Applikation beendet (Graceful Shutdown).
 
-2. Import the project inside STS/Eclipse : <br>
-     - Open STS/Eclipse > file > import > maven > existing project > browse > finish . <br>
-     
-3. Make sure you are in the Business_Management_Project directory. <br>
+### 4. Im Browser oeffnen
 
-![packageExplorer](https://github.com/SuhasKamate/Business_Management_Project/assets/126138738/3ea1eb7f-8e49-4b76-96e4-798b6b8e8715)
+```
+http://localhost:2330
+```
 
+### 5. Einloggen
 
-4.Configure the database connection is application.properties (check the Database section for more information). <br>
+Beim ersten Start wird automatisch ein Admin-Account erstellt:
 
-5.Run the project (by running main method is BusinessProjectApplication.java) OR right clink on the project > Run As > Spring Boot App. <br>
+| Feld | Wert |
+|------|------|
+| E-Mail | `admin@business.com` |
+| Passwort | `Admin123!` |
 
-6.Open http://localhost:2330/home in any browser. <br>
+Ueber das Admin-Panel koennen weitere Admins, User und Produkte verwaltet werden. User koennen sich auch selbst ueber `/register` registrieren.
 
-7.Now your tables will be created in the databse. <br>
-   - You have to add one admin data manually to login as admin, So add one admin data. <br>
-    
+---
 
+## Plattform-spezifische Hinweise
 
+### Windows
 
-## Database :
+**Java installieren:**
+1. [Adoptium JDK 21](https://adoptium.net/) herunterladen und installieren
+2. Installer waehlt automatisch `JAVA_HOME` – bei manuellem Setup:
+   - Systemumgebungsvariable `JAVA_HOME` auf den JDK-Ordner setzen (z.B. `C:\Program Files\Eclipse Adoptium\jdk-21`)
+   - `%JAVA_HOME%\bin` zu `Path` hinzufuegen
+3. Pruefen: `java --version`
 
-MySQL can be used as the database for this project. 
-The database connection can be configured in the application.properties file, with the appropriate values for the following properties: <br>
+**MySQL via XAMPP:**
+1. [XAMPP](https://www.apachefriends.org/) installieren
+2. XAMPP Control Panel starten → **MySQL** starten
+3. phpMyAdmin oeffnen (`http://localhost/phpmyadmin`) → neue Datenbank `businessproject` anlegen
 
-spring.datasource.name=[Your Database Name] <br>
-spring.datasource.url=jdbc:mysql://localhost:3306/[Your Database Name] <br>
-spring.datasource.password=[Your password] <br>
-spring.datasource.username=[Your username] <br>
-spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver <br>
-spring.jpa.hibernate.ddl-auto=update <br>
-server.port=2330[Optional] <br>
+### Linux – Manjaro
 
+```bash
+# Java 21
+sudo pacman -S jdk21-openjdk
+sudo archlinux-java set java-21-openjdk
 
+# MariaDB
+sudo pacman -S mariadb
+sudo mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+sudo systemctl enable --now mariadb
+sudo mysql_secure_installation
 
+# Datenbank anlegen
+sudo mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS businessproject;"
+```
 
-## WorkFlow :
+### Linux – Ubuntu
 
-![workflow](https://github.com/SuhasKamate/Business_Management_Project/assets/126138738/aea72470-49c8-41a4-8974-48737638ae19)
+```bash
+# Java 21
+sudo apt update
+sudo apt install openjdk-21-jdk
 
+# MySQL
+sudo apt install mysql-server
+sudo systemctl enable --now mysql
+sudo mysql_secure_installation
 
+# Datenbank anlegen
+sudo mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS businessproject;"
+```
 
+---
 
+## Konfiguration
 
-## Preview :
+Die Standardkonfiguration in `src/main/resources/application.properties` funktioniert out-of-the-box mit:
+- DB-User: `root` / Passwort: `root`
+- Port: `2330`
 
+Falls dein MySQL-Setup ein anderes Passwort hat, kannst du es per Umgebungsvariable ueberschreiben:
 
-#### Products 
+**Linux:**
+```bash
+DB_PASSWORD=meinpasswort ./mvnw spring-boot:run
+```
 
-![products (2)](https://github.com/SuhasKamate/Business_Management_Project/assets/126138738/0496f63a-f30c-4108-91a7-966bd37b2b54)
+**Windows (CMD):**
+```cmd
+set DB_PASSWORD=meinpasswort
+mvnw.cmd spring-boot:run
+```
 
+Alle konfigurierbaren Umgebungsvariablen:
 
-#### Location 
+| Variable | Default | Beschreibung |
+|----------|---------|-------------|
+| `DB_USERNAME` | `root` | Datenbank-Benutzername |
+| `DB_PASSWORD` | `root` | Datenbank-Passwort |
+| `PEPPER_SECRET` | (interner Default) | Pepper fuer Passwort-Hashing |
+| `ADMIN_EMAIL` | `admin@business.com` | E-Mail des initialen Admins |
+| `ADMIN_PASSWORD` | `Admin123!` | Passwort des initialen Admins |
 
-![locateus](https://github.com/SuhasKamate/Business_Management_Project/assets/126138738/30e40d74-d2f0-48cb-91b3-ea515f12c498)
+---
 
+## Weitere Befehle
 
+```bash
+# Nur kompilieren (ohne Start)
+./mvnw clean compile
 
-#### Login Page
+# JAR bauen
+./mvnw clean package -DskipTests
 
-![logins](https://github.com/SuhasKamate/Business_Management_Project/assets/126138738/9c1efb48-5b23-4a43-8c96-81d55a7b1180)
+# Tests ausfuehren
+./mvnw test
+```
 
+---
 
+## Sicherheitsfeatures
 
+- **Passwort-Hashing:** BCrypt (Cost 12) + Pepper
+- **Brute-Force-Schutz:** Account-Sperre nach 5 Fehlversuchen
+- **Session-Management:** HttpOnly Cookies, SameSite=Lax, Session-Fixation-Schutz
+- **Autorisierung:** Rollenbasiert (ADMIN / USER) mit Spring Security
+- **Input-Validierung:** Bean Validation + HTML5 Client-side Validation
+- **XSS-Schutz:** Thymeleaf Output-Escaping, Security Headers, Pattern-Validierung
+- **SQL-Injection-Schutz:** Spring Data JPA mit Prepared Statements
 
-#### AdminPanel
+## Technologie-Stack
 
-![adminpanel](https://github.com/SuhasKamate/Business_Management_Project/assets/126138738/b89aa5ee-3f7f-4145-b063-048729e7fbe9)
-
-
-#### UserPanel 
-
-![userpanel](https://github.com/SuhasKamate/Business_Management_Project/assets/126138738/e0f81692-c049-4a2f-a78d-30d3906f4429)
-
-
-### Exception page
-
-![exceptionPage](https://github.com/SuhasKamate/Business_Management_Project/assets/126138738/4349a429-61ff-4ecd-a463-2900874e1ea5)
+- Spring Boot 3.4.3
+- Java 21
+- Thymeleaf + Spring Security 6
+- MySQL / MariaDB
+- Hibernate (JPA)
