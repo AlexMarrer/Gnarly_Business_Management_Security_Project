@@ -8,6 +8,7 @@ target/
 .settings/
 .classpath
 .project
+.metadata/
 
 # OS files
 .DS_Store
@@ -20,6 +21,3 @@ logs/
 # Spring Boot
 *.jar
 *.war
-
-# environement variables
-*.properties
