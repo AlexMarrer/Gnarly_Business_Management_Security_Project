@@ -26,8 +26,12 @@ import com.business.services.AdminServices;
 import com.business.services.OrderServices;
 import com.business.services.ProductServices;
 import com.business.services.UserServices;
+import com.business.validation.OnCreate;
 
 import jakarta.validation.Valid;
+import jakarta.validation.groups.Default;
+
+import org.springframework.validation.annotation.Validated;
 
 @Controller
 public class AdminController {
@@ -63,9 +67,15 @@ public class AdminController {
 
 	@PreAuthorize("hasRole('USER')")
 	@PostMapping("/product/order")
-	public String orderHandler(@ModelAttribute() Orders order,
+	public String orderHandler(@Valid @ModelAttribute("order") Orders order, BindingResult result,
 			@AuthenticationPrincipal UserDetails principal, Model model) {
 		User currentUser = services.getUserByEmail(principal.getUsername());
+		if (result.hasErrors()) {
+			model.addAttribute("name", currentUser.getUname());
+			List<Orders> orders = orderServices.getOrdersForUser(currentUser);
+			model.addAttribute("orders", orders);
+			return "BuyProduct";
+		}
 		BigDecimal totalAmount = Logic.countTotal(order.getoPrice(), order.getoQuantity());
 		order.setTotalAmount(totalAmount);
 		order.setUser(currentUser);
@@ -109,7 +119,7 @@ public class AdminController {
 
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("addingAdmin")
-	public String addAdmin(@Valid @ModelAttribute("admin") Admin admin, BindingResult result) {
+	public String addAdmin(@Validated({Default.class, OnCreate.class}) @ModelAttribute("admin") Admin admin, BindingResult result) {
 		if (result.hasErrors()) {
 			return "Add_Admin";
 		}
@@ -127,7 +137,11 @@ public class AdminController {
 
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/updatingAdmin/{id}")
-	public String updateAdmin(@ModelAttribute Admin admin, @PathVariable("id") UUID id) {
+	public String updateAdmin(@Valid @ModelAttribute("admin") Admin admin, BindingResult result,
+			@PathVariable("id") UUID id) {
+		if (result.hasErrors()) {
+			return "Update_Admin";
+		}
 		this.adminServices.update(admin, id);
 		return "redirect:/admin/services";
 	}

@@ -36,6 +36,9 @@ public class UserServices {
 		existing.setUname(user.getUname());
 		existing.setUemail(user.getUemail());
 		existing.setUnumber(user.getUnumber());
+		if (user.getUpassword() != null && !user.getUpassword().isEmpty()) {
+			existing.setUpassword(passwordEncoder.encode(user.getUpassword()));
+		}
 		this.userRepository.save(existing);
 	}
 

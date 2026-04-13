@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.business.entities.User;
 import com.business.services.UserServices;
+import com.business.validation.OnCreate;
 
-import jakarta.validation.Valid;
+import jakarta.validation.groups.Default;
+
+import org.springframework.validation.annotation.Validated;
 
 @Controller
 public class RegistrationController {
@@ -27,7 +30,7 @@ public class RegistrationController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@Valid @ModelAttribute("user") User user,
+    public String registerUser(@Validated({Default.class, OnCreate.class}) @ModelAttribute("user") User user,
                                BindingResult result,
                                @RequestParam("passwordConfirm") String passwordConfirm,
                                Model model) {

@@ -18,6 +18,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -29,6 +30,7 @@ public class Orders {
 
 	@NotBlank(message = "Produktname ist erforderlich")
 	@Size(min = 2, max = 100)
+	@Pattern(regexp = "^[^<>\"'&]*$", message = "Sonderzeichen < > \" ' & sind nicht erlaubt")
 	private String oName;
 
 	@NotNull(message = "Preis ist erforderlich")
@@ -43,8 +45,6 @@ public class Orders {
 
 	private LocalDate orderDate;
 
-	@NotNull
-	@DecimalMin(value = "0.01")
 	@Digits(integer = 12, fraction = 2)
 	private BigDecimal totalAmount;
 

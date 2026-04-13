@@ -32,6 +32,9 @@ public class AdminServices {
 		existing.setAdminName(admin.getAdminName());
 		existing.setAdminEmail(admin.getAdminEmail());
 		existing.setAdminNumber(admin.getAdminNumber());
+		if (admin.getAdminPassword() != null && !admin.getAdminPassword().isEmpty()) {
+			existing.setAdminPassword(passwordEncoder.encode(admin.getAdminPassword()));
+		}
 		this.adminRepository.save(existing);
 	}
 

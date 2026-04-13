@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import com.business.validation.OnCreate;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -30,10 +32,11 @@ public class Admin {
 	@Column(length = 255, nullable = false, unique = true)
 	private String adminEmail;
 
-	@NotBlank(message = "Passwort ist erforderlich")
+	@NotBlank(message = "Passwort ist erforderlich", groups = OnCreate.class)
 	@Pattern(
 		regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
-		message = "Passwort: min. 8 Zeichen, Gross+Klein+Zahl+Sonderzeichen"
+		message = "Passwort: min. 8 Zeichen, Gross+Klein+Zahl+Sonderzeichen",
+		groups = OnCreate.class
 	)
 	@Column(length = 255, nullable = false)
 	private String adminPassword;
